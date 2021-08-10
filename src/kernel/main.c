@@ -6,6 +6,9 @@
 #include "utils/debug.h"
 #include "cpu/gdt.h"
 #include "cpu/tss.h"
+#include "cpu/idt.h"
+#include "memory/pmm.h"
+#include "memory/vmm.h"
 
 int kernel_main(uint32_t addr, uint32_t magic)
 {
@@ -43,6 +46,11 @@ int kernel_main(uint32_t addr, uint32_t magic)
 
     gdt_init();
 	install_tss(5, 0x10, 0);
+
+	idt_init();
+
+	pmm_init(multiboot_meminfo, multiboot_mmap);
+	vmm_init();
 
     for (;;)
         ;

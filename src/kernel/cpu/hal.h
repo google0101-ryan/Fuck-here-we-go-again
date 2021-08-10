@@ -23,3 +23,13 @@ static __inline void outportb(unsigned short _port, unsigned char _data)
 				 :
 				 : "dN"(_port), "a"(_data));
 }
+
+static __inline void halt()
+{
+	asm volatile("hlt");
+}
+
+static __inline void disable_interrupts()
+{
+	asm volatile("cli");
+}
