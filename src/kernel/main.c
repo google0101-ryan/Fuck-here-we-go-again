@@ -9,6 +9,10 @@
 #include "cpu/idt.h"
 #include "memory/pmm.h"
 #include "memory/vmm.h"
+#include "cpu/exceptions.h"
+#include "cpu/pit.h"
+#include "cpu/rtc.h"
+#include "system/framebuffer.h"
 
 int kernel_main(uint32_t addr, uint32_t magic)
 {
@@ -51,6 +55,17 @@ int kernel_main(uint32_t addr, uint32_t magic)
 
 	pmm_init(multiboot_meminfo, multiboot_mmap);
 	vmm_init();
+
+	exception_init();
+
+	rtc_init();
+	pit_init();
+
+	framebuffer_init(multiboot_framebuffer);
+
+	asm volatile("sti");
+
+	
 
     for (;;)
         ;
